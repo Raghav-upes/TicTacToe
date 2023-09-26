@@ -3,7 +3,36 @@ guid: 81f51ce0387116a47bd478a6125107c9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _playerATimer: {instanceID: 0}
+  - _playerBTimer: {instanceID: 0}
+  - _winningScreen: {instanceID: 0}
+  - _playerATimerText: {instanceID: 0}
+  - _playerBTimerText: {instanceID: 0}
+  - _winnerName: {instanceID: 0}
+  - _playerANameText: {instanceID: 0}
+  - _playerBNameText: {instanceID: 0}
+  - _playerNameInput: {instanceID: 0}
+  - _playerNameText: {instanceID: 0}
+  - _upperUIAnimator: {instanceID: 0}
+  - _lowerUIAnimator: {instanceID: 0}
+  - _upperUI: {instanceID: 0}
+  - _lowerUI: {instanceID: 0}
+  - _playUI: {instanceID: 0}
+  - _multiplayerUI: {instanceID: 0}
+  - _singleplayerUI: {instanceID: 0}
+  - _gameOverUI: {instanceID: 0}
+  - _playerAName: {instanceID: 0}
+  - _playerBName: {instanceID: 0}
+  - _playerAUI: {instanceID: 0}
+  - _playerBUI: {instanceID: 0}
+  - OffSprite: {fileID: 21300000, guid: 787e9ee62a1f74f40ab52bcaa510910e, type: 3}
+  - OnSprite: {fileID: 21300000, guid: d6eba5811e334cf439cfd9f46e773780, type: 3}
+  - but: {instanceID: 0}
+  - _createRoomNameText: {instanceID: 0}
+  - _joinRoomNameText: {instanceID: 0}
+  - _playerANameTextInputField: {instanceID: 0}
+  - _playerBNameTextInputField: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

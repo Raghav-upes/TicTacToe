@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine;
 using System;
+using System.Runtime.InteropServices;
 
 [RequireComponent(typeof(PhotonView))]
 public class UIController : MonoBehaviour
@@ -41,16 +42,21 @@ public class UIController : MonoBehaviour
     private RectTransform _playerAUI, _playerBUI;
     [SerializeField]
     private int[] _maxEachPieceCount = { 3, 2, 1 };
+
     [SerializeField]
     private float _maxTimeForEachPlayer = 40f;
 
+    [SerializeField]
+    private Text matchResult;
+
+    Tile tile;
     public InputField _createRoomNameText, _joinRoomNameText;
     public InputField _playerANameTextInputField, _playerBNameTextInputField;
 
     private PhotonView _photonView;
-    private int[] _playerABtnCount = new int[3];
-    private int[] _playerBBtnCount = new int[3];
-    private int _btnIndex;
+    public static int[] _playerABtnCount = new int[3];
+    public static int[] _playerBBtnCount = new int[3];
+    public int _btnIndex;
     private float _timeRemainingForPlayerA, _timeRemainingForPlayerB;
     private string _playerName;
 
@@ -130,7 +136,13 @@ public class UIController : MonoBehaviour
         {
             GameManager.Instance.PlayerPiece = (Piece)index;
             _btnIndex = index;
+            if(GameManager.Instance.PlayerTurn == Turn.PLAYER_B && InputManager.isAI)
+            {
+                GameManager.Instance.PlayerPiece = (Piece)0;
+                _btnIndex = 0;
+            }
             Debug.Log(GameManager.Instance.PlayerPiece);
+
         }
     }
 
@@ -222,15 +234,37 @@ public class UIController : MonoBehaviour
         }
     }
 
+    IEnumerator PlayAI()
+    {
+        yield return new WaitForSecondsRealtime(2);
+
+        GameManager.Instance.PlayerPiece = Piece.BYPASS;
+        GameManager.Instance.PlayTurn(null);
+    }
+
     public void OfflineStart()
     {
-        if(_playerANameTextInputField.text == "" || _playerBNameTextInputField.text == "")
+        if (GameManager.Instance.PlayerTurn == Turn.PLAYER_B && InputManager.isAI)
+        {
+            StartCoroutine(PlayAI());
+        }
+        if (_playerANameTextInputField.text == "" )
         {
             return;
         }
-        ButtonsInteractableOffline();
+        if (_playerBNameTextInputField.text == "" && !InputManager.isAI)
+        {
+            return;
+        }
+        
         _playerANameText.text = _playerANameTextInputField.text;
-        _playerBNameText.text = _playerBNameTextInputField.text;
+       
+            _playerBNameText.text = _playerBNameTextInputField.text;
+        if(InputManager.isAI )
+        {
+            _playerBNameText.text = "COM";
+        }
+        
         GameManager.Instance.State = GameState.START;
         _playUI.SetActive(true);
         _singleplayerUI.SetActive(false);
@@ -246,15 +280,19 @@ public class UIController : MonoBehaviour
             _playerABtnCount[i] = _playerBBtnCount[i] = _maxEachPieceCount[i];
             _playerABtnCountText[i].text = _playerBBtnCountText[i].text = _maxEachPieceCount[i].ToString();
         }
+        Debug.LogWarning(GameManager.Instance.PlayerTurn);
+        ButtonsInteractableOffline();
     }
 
-    public void GameOver()
+    public void GameOver(bool draw=false)
     {
-        StartCoroutine(OverAndCaptureScreenshot());
+        StartCoroutine(OverAndCaptureScreenshot(draw));
     }
 
-    IEnumerator OverAndCaptureScreenshot()
+    IEnumerator OverAndCaptureScreenshot(bool draw)
     {
+        Debug.Log(GameManager.Instance.PlayerTurn);
+        ButtonsInteractableOffline();
         AnimateOut();
         yield return new WaitForSeconds(1f);
 
@@ -267,7 +305,16 @@ public class UIController : MonoBehaviour
         _winningScreen.sprite = sp;
 
         _gameOverUI.SetActive(true);
-        _winnerName.text = ((GameManager.Instance.Winner == Turn.PLAYER_A) ? _playerANameText.text : _playerBNameText.text) + " WON";
+        _winnerName.text = ((GameManager.Instance.Winner == Turn.PLAYER_A) ? _playerANameText.text : _playerBNameText.text);
+        if (draw)
+        {
+            _winnerName.text = "Match";
+            matchResult.text = "DRAW!";
+        }
+        else
+        {
+            matchResult.text = "WON!";
+        }
         GameManager.Instance.Winner = Turn.NONE;
     }
 
@@ -337,5 +384,10 @@ public class UIController : MonoBehaviour
             PlayerPrefs.SetString("PlayerName", _playerName);
             _playerNameText.text = _playerName;
         }
+    }
+
+    public void backDefault()
+    {
+        GameManager.Instance.PlayerTurn = Turn.PLAYER_A;
     }
 }

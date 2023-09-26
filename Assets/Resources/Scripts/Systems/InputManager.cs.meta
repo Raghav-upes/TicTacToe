@@ -3,7 +3,10 @@ guid: 3c45110cbc90ea04b8f0143872165e87
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - OffSprite: {fileID: 21300000, guid: 787e9ee62a1f74f40ab52bcaa510910e, type: 3}
+  - OnSprite: {fileID: 21300000, guid: d6eba5811e334cf439cfd9f46e773780, type: 3}
+  - but: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

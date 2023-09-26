@@ -49,8 +49,9 @@ public class SinglePlayerBoard : BoardManager
                 _board[i, j] = -1;
             }
             if (!CheckWinner())
-            {
+            {       
                 GameManager.Instance.SwitchTurn();
+                checkDarw();
             }
         }
     }

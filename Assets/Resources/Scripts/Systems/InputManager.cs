@@ -2,9 +2,15 @@ using System;
 using UnityEngine.InputSystem;
 using UnityEngine;
 
+
 public class InputManager : MonoBehaviour 
 {
     private static InputManager inputInstance;
+
+    public static bool isAI=false;
+
+
+
     public static InputManager Instance { get { return inputInstance; } }
 
     //Variables
@@ -42,6 +48,11 @@ public class InputManager : MonoBehaviour
 
     private void HandleTouch(InputAction.CallbackContext ctx)
     {
+        if (isAI && GameManager.Instance.PlayerTurn == Turn.PLAYER_B)
+        {
+            return;
+        }
+
         Ray ray = Camera.main.ScreenPointToRay(_inputMap.Player.TouchPosition.ReadValue<Vector2>());
         RaycastHit hit;
         if (GameManager.Instance.Mode == GameMode.ONLINE && GameManager.Instance.State == GameState.START)
@@ -68,7 +79,8 @@ public class InputManager : MonoBehaviour
             ray = Camera.main.ScreenPointToRay(_inputMap.Player.MousePosition.ReadValue<Vector2>());
             if (Physics.Raycast(ray, out hit, 100))
             {
-                GameManager.Instance.PlayTurn(hit.transform.gameObject);
+               
+                    GameManager.Instance.PlayTurn(hit.transform.gameObject);
                 return;
             }
         }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     public delegate void OnlineSetup();
     public event OnlineSetup OnlineStart;
 
-    public delegate void GameEnd();
+    public delegate void GameEnd(bool draw=false);
     public event GameEnd GameOver;
 
 
@@ -67,9 +68,15 @@ public class GameManager : MonoBehaviour
 
     public void PlayTurn(GameObject tile)
     {
+        if(tile == null && InputManager.isAI && GameManager.Instance.PlayerTurn==Turn.PLAYER_B)
+        {
+            PiecePlaceOnBaord(0);
+            return;
+        }
         if(_playerPiece != Piece.NONE)
         {
             PiecePlaceOnBaord(tile.gameObject.GetComponent<Tile>().Index);
+            Debug.Log(tile.gameObject.GetComponent<Tile>().Index);
         }
     }
 
@@ -85,8 +92,8 @@ public class GameManager : MonoBehaviour
         Mode = (GameMode)mode;
     }
 
-    public void GameEnded()
+    public void GameEnded(bool draw = false)
     {
-        GameOver();
+        GameOver(draw);
     }
 }

@@ -72,6 +72,7 @@ public class MultiplayerBoard : BoardManager
             {
                 Debug.Log("Checked");
                 GameManager.Instance.SwitchTurn();
+                checkDarw();
             }
         }
     }

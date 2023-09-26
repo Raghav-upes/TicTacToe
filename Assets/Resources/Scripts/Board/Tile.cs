@@ -31,6 +31,7 @@ public class Tile : MonoBehaviour
         if ((int)GameManager.Instance.PlayerPiece > (int)_currentTilePiece && (int)GameManager.Instance.PlayerTurn != (int)_tileTaken)
         {
             _currentTilePiece = GameManager.Instance.PlayerPiece;
+            Debug.Log(_currentTilePiece);
             return true;
         }
         else

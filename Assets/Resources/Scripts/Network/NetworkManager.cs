@@ -126,7 +126,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 		return PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers;
 	}
 
-	public void KickPlayers()
+	public void KickPlayers(bool draw = false)
     {
 		if (GameManager.Instance.Mode == GameMode.ONLINE)
         {
