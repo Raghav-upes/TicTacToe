@@ -262,7 +262,7 @@ public class UIController : MonoBehaviour
             _playerBNameText.text = _playerBNameTextInputField.text;
         if(InputManager.isAI )
         {
-            _playerBNameText.text = "COM";
+            _playerBNameText.text = "AI";
         }
         
         GameManager.Instance.State = GameState.START;
