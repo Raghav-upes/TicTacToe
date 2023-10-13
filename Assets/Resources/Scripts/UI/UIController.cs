@@ -43,6 +43,7 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private int[] _maxEachPieceCount = { 3, 2, 1 };
 
+
     [SerializeField]
     private float _maxTimeForEachPlayer = 40f;
 
@@ -333,6 +334,10 @@ public class UIController : MonoBehaviour
 
     public void OnlineStart()
     {
+        if (_playerNameInput.text == "")
+            return;
+        else
+            SetPlayerName();
         _photonView.RPC(nameof(RPC_SetName), RpcTarget.AllBuffered, new object[] { _playerName });
         if (GameManager.Instance.Player == Turn.PLAYER_A)
         {

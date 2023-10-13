@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PhotonView))]
 public class NetworkManager : MonoBehaviourPunCallbacks
@@ -13,6 +14,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 	private MultiplayerBoard _multiplayerBoard;
 
 	private PhotonView _photonView;
+
+	[SerializeField]
+	private InputField playerName;
 
     private void Awake()
     {
@@ -35,6 +39,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public void Connect()
 	{
+		if (playerName.text == "")
+			return;
 		if (PhotonNetwork.IsConnected)
 		{
 			PhotonNetwork.JoinRandomRoom(null, 2);
