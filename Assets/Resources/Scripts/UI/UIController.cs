@@ -7,6 +7,8 @@ using TMPro;
 using UnityEngine;
 using System;
 using System.Runtime.InteropServices;
+using UnityEngine.EventSystems;
+using UnityEngine.Windows;
 
 [RequireComponent(typeof(PhotonView))]
 public class UIController : MonoBehaviour
@@ -42,6 +44,10 @@ public class UIController : MonoBehaviour
     private RectTransform _playerAUI, _playerBUI;
     [SerializeField]
     private int[] _maxEachPieceCount = { 3, 2, 1 };
+
+    [SerializeField]
+    private Text placeholderA;
+    [SerializeField] private Text placeholderB;
 
 
     [SerializeField]
@@ -251,10 +257,12 @@ public class UIController : MonoBehaviour
         }
         if (_playerANameTextInputField.text == "" )
         {
+            StartCoroutine(BlinkInputField(placeholderA, 10f, 2f));
             return;
         }
         if (_playerBNameTextInputField.text == "" && !InputManager.isAI)
         {
+            StartCoroutine(BlinkInputField(placeholderB, 10f, 2f));
             return;
         }
         
@@ -390,6 +398,35 @@ public class UIController : MonoBehaviour
             _playerNameText.text = _playerName;
         }
     }
+    public static IEnumerator BlinkInputField(Text text, float blinkSpeed, float blinkTime)
+    {
+
+
+        // Get initial color
+        Color initialColor = text.color;
+
+        float startTime = Time.time;
+
+        while (Time.time < startTime + blinkTime)
+        {
+
+            // Calculate blinking alpha
+            float alpha = Mathf.Sin(Time.time * blinkSpeed) * 0.5f + 0.5f;
+
+            // Modify alpha
+            Color newColor = text.color;
+            newColor.a = initialColor.a * alpha;
+            text.color = newColor;
+
+            yield return null;
+        }
+
+        // Reset color after time
+        text.color = initialColor;
+
+    }
+
+
 
     public void backDefault()
     {

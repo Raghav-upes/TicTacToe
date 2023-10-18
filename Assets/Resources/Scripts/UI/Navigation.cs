@@ -15,7 +15,10 @@ public class Navigation : MonoBehaviour
     {
         previousScene();
     }
-
+    public void closeApp()
+    {
+        Application.Quit();
+    }
     public void previousScene()
     {
      
